@@ -1,0 +1,29 @@
+h1 {
+    color: lightblue;
+}
+h2 {
+    color: lightgray;
+}
+
+#site-header {
+    background-color: white;
+    font-family: Arial, Helvetica, sans-serif;
+    position: sticky;
+    text-align: right;  
+    margin: 0 auto;
+}
+
+a:link {
+    text-decoration: none;
+    color: black;   
+}
+
+body {
+    background-color: white;
+    font-family: Arial, Helvetica, sans-serif;
+    font-weight: 400;
+    line-height: 1.5;
+    color: #797979;
+    text-align: center;
+    margin: 0 auto;
+}
