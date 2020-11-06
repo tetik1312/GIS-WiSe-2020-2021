@@ -12,7 +12,7 @@ h1 {
 }
 
 h1:hover{
-    color:  #1fa1b3;
+    color: lightblue;
     transition: color 2s ease-in-out 0.4s;
 }
 
@@ -22,6 +22,10 @@ h2 {
     padding-top: 10%;
 }
 
+p {
+    font-size: 20px;
+}
+
 #site-header {
     background-color: whitesmoke;
     font-family: Arial, Helvetica, sans-serif;
@@ -29,7 +33,7 @@ h2 {
     width: 100%;
     height: 50px;
     text-align: right;  
-    margin: 0 auto;
+    margin: 0;
 }
 
 #site-header > .row {
@@ -37,11 +41,14 @@ h2 {
 }
 
 nav{
+    text-align: center;
     position: sticky;
-    text-align: right;
-    display: inline;
-    position: fixed;
-    font-size: 1.2rem;
+    font-size: 20px;
+}
+
+nav:hover{
+    color: red;
+    transition: color 2s ease-in-out 0.4s;
 }
 
 #site-header > a >img {
@@ -53,8 +60,6 @@ nav{
 .row{
     flex-flow: row wrap;
     display: inline-block;
-    padding-right: 1.5rem;
-    padding-left: 1.5rem;
     margin: 0;
 }
 
@@ -91,10 +96,26 @@ div{
 div h1 {
     width: 100%; 
     letter-spacing: 1.5px;
-    height: 35;
-    font-size: .8125rem;
-    padding: 4px 15px;
-    margin: 0 0 9px;
+    height: 35px;
+    font-size: 20px;
+    margin: 9px;
+}
+
+div > h1{
+    transition: color 3s ease-in;
+    color: darkblue;
+    animation-duration: 2s;
+    animation-name: slidein;
+}
+@keyframes slidein{
+    from{
+        margin-left: 100%;
+        width: 100%;
+    }
+    to{
+        margin-left: 0%;
+        width: 100%;
+    }
 }
 
 body {
@@ -104,8 +125,7 @@ body {
     line-height: 1.5;
     color: #797979;
     text-align: center;
-    width: 800px;
-    margin: 0 auto;
+    margin: 0;
     letter-spacing: 0.01em;
 }
 
@@ -115,28 +135,53 @@ img{
     width: auto;
 }
 
-@media screen and (min-width:320px){
-    h1{
-
-        font-size: 0.8rem;
-    }
-
-    nav{
-        font-size: 0.8rem;
-    }
+div img{
+    display:inline ;
 }
 
-@media screen and (min-width:780px){
-    h1{
-        font-size: 2rem;
-    }
+div > b{
+    display: block;
 }
+
+.flexbox > div{
+    background-color: white;
+    margin: auto;
+    padding: initial;
+    display:flex;
+    flex-direction:column;
+  }
 
 @media screen and (min-width:1024px){
     h1{
-        font-size: 2rem;
+
+        font-size: 20px;
+    }
+
+    nav{
+        font-size: 20px;
     }
 }
+
+@media screen and (min-width:600px) and (max-width: 1023px){
+    h1{
+        font-size: 25px;
+    }
+
+    nav{
+        font-size: 25px;
+    }
+}
+
+@media screen and (max-width:600px){
+    h1{
+        font-size: 20px;
+    }
+
+    nav{
+        font-size: 20px;
+    }
+}
+
 
 
 
