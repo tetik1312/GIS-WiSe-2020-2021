@@ -16,14 +16,9 @@ h1:hover{
     transition: color 2s ease-in-out 0.4s;
 }
 
-h2 {
-    color: lightgray;
-    text-align: center;
-    padding-top: 10%;
-}
 
-p {
-    font-size: 20px;
+p, i, a, b, em {
+    font-size: 21px;
 }
 
 #site-header {
@@ -33,7 +28,7 @@ p {
     width: 100%;
     height: 50px;
     text-align: right;  
-    margin: 0;
+    margin: 0%;
 }
 
 #site-header > .row {
@@ -88,7 +83,6 @@ a:hover{
 }
 
 div{
-    display: inline;
     background: whitesmoke;
     
 }
@@ -101,12 +95,13 @@ div h1 {
     margin: 9px;
 }
 
-div > h1{
+div.slide > h1{
     transition: color 3s ease-in;
     color: darkblue;
     animation-duration: 2s;
     animation-name: slidein;
 }
+
 @keyframes slidein{
     from{
         margin-left: 100%;
@@ -125,7 +120,7 @@ body {
     line-height: 1.5;
     color: #797979;
     text-align: center;
-    margin: 0;
+    margin: 0%;
     letter-spacing: 0.01em;
 }
 
@@ -133,6 +128,11 @@ img{
     display:inline;
     height: 300px;
     width: auto;
+}
+
+video{
+    width: 650px;
+    height: 400px;
 }
 
 div img{
@@ -147,40 +147,54 @@ div > b{
     background-color: white;
     margin: auto;
     padding: initial;
-    display:flex;
+    display: inline;
     flex-direction:column;
   }
 
-@media screen and (min-width:1024px){
-    h1{
 
+@media only screen and (min-width:601px) and (max-width: 1023px){
+
+    p, i, a {
+        font-size: 18px;
+    }
+
+    h1 {
         font-size: 20px;
     }
 
-    nav{
-        font-size: 20px;
+    video{
+        width: 350px;
+        height: 300px;
     }
 }
 
-@media screen and (min-width:600px) and (max-width: 1023px){
-    h1{
-        font-size: 25px;
+@media only screen and (max-width:600px){
+
+    p, i, a, b, li, em, sub {
+        font-size: 15px;
     }
 
-    nav{
-        font-size: 25px;
-    }
-}
-
-@media screen and (max-width:600px){
-    h1{
+    #Das_bin_Ich{
         font-size: 20px;
     }
 
-    nav{
-        font-size: 20px;
+
+    #Glas{
+        width:300px;
+        height:350px;
     }
-}
+
+    #Figuren{
+        width:300px;
+        height:350px;
+    }
+    
+    video{
+        width:250px;
+        height:200px;
+    }
+
+ }
 
 
 
