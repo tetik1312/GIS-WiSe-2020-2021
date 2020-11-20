@@ -1,0 +1,38 @@
+/*Überschrift*/
+body {
+    background: lightblue;
+    font-family: sans-serif;
+}
+
+h1 {
+    color:darkorchid;
+    text-align:center;
+    font-size: 25px;
+}
+
+div {
+    border-width: thin;
+    background-color: whitesmoke;
+    width: 450px;
+}
+
+label {
+    color: black;
+    text-align: left;
+    font-size: 17px;
+}
+
+select {
+    display: inline;
+    font-size: 15px;
+    background: lightcyan;
+}
+
+button {
+    font-size: 15px;
+    background-color:lightblue;
+}
+
+canvas {
+    align-self: right;
+}
