@@ -1,21 +1,20 @@
 "use strict";
-/*Kopf*/
-var Kopf;
-(function (Kopf) {
-    let kopfform = "";
-    let kopffarbe = "";
-    let preis = 0;
-})(Kopf || (Kopf = {}));
-var Rumpf;
-(function (Rumpf) {
-    let rumpfkopf = "";
-    let rumpffarbe = "";
-    let preis = 0;
-})(Rumpf || (Rumpf = {}));
-var Beine;
-(function (Beine) {
-    let beinform = "";
-    let rumpffarbe = "";
-    let preis = 0;
-})(Beine || (Beine = {}));
+var Rakete;
+(function (Rakete) {
+    Rakete.kopfAuswahl = [
+        { form: "Standard", preis: 0 },
+        { form: "Viereckig", preis: 0 },
+        { form: "Dreieckig", preis: 0 }
+    ];
+    Rakete.rumpfAuswahl = [
+        { form: "Standard", preis: 0 },
+        { form: "Rund", preis: 0 },
+        { form: "Dreieckig", preis: 0 }
+    ];
+    Rakete.beinAuswahl = [
+        { form: "Standard", preis: 0 },
+        { form: "Rund", preis: 0 },
+        { form: "Dreieckig", preis: 0 }
+    ];
+})(Rakete || (Rakete = {}));
 //# sourceMappingURL=data.js.map

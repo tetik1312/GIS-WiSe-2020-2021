@@ -1,56 +1,49 @@
 /*Aufgabe2*/
-interface Kopf {
-    kopfform: string;
-    kopffarbe: string;
-    preis?: number;
-}
+namespace Rakete {
+    export interface Raketenteile {
+        form: string;
+        preis: number;
+    }
 
-interface Rumpf {
-    rumpfformh: string;
-    rumpffarbe: string;
-    preis?: number;
-}
+    export interface Spitze extends Raketenteile { }
 
-interface Beine {
-    beinform: string;
-    beinfarbe: string;
-    preis?: number;
+    export interface Rumpf extends Raketenteile { }
+
+    export interface Antrieb extends Raketenteile { }
 }
 
 
-function draw(): void { 
-    const canvas: HTMLCanvasElement = <HTMLCanvasElement>document.getElementById("canvas");
-    const context: CanvasRenderingContext2D = <CanvasRenderingContext2D>canvas.getContext("2d");
+let options: HTMLCollectionOf<HTMLOptionElement> = document.getElementsByTagName("option");
 
-    context.lineWidth = 10;
-    
-    context.strokeRect(50, 100, 150, 110);
-    context.fillStyle = "red";
-    context.fillRect(130, 190, 40, 60);
-    context.beginPath();
-    context.moveTo(50, 140);
-    context.lineTo(150, 60);
-    context.lineTo(250, 140);
-    context.closePath();
-    context.stroke();
+options[0].addEventListener("change", viereckig);
+options[1].addEventListener("change", rund);
+options[2].addEventListener("change", dreieckig);
+
+function viereckig(_e: Event): void {
+    //
 }
-draw();
 
-
-
-
-
-let button: HTMLCollectionOf<HTMLButtonElement> = document.getElementsByTagName("button");
-
-button[0].addEventListener("click", bestätigen);
-
-function div(_e: Event): void {
-    let div: HTMLDivElement = document.createElement("div");
-    document.getElementById("fillThis")?.appendChild(div);
+function rund(_e: Event): void {
+    //
 }
+
+function dreieckig(_e: Event): void {
+    //
+}
+
+
+let bild1: HTMLPictureElement = <HTMLPictureElement>document.getElementById("Viereck");
+bild1.setAttribute("src", "../Aufgabe_2.3/Viereck.png");
+
+let bild2: HTMLPictureElement = <HTMLPictureElement>document.getElementById("Dreieck");
+bild2.setAttribute("src", "../Aufgabe_2.3/Dreieck.png");
+
+let bild3: HTMLPictureElement = <HTMLPictureElement>document.getElementById("Kreis");
+bild3.setAttribute("src", "../Aufgabe_2.3/Kreis.png");
+
+
 
 function bestätigen(_e: Event): void {
     let parent: HTMLDivElement = <HTMLDivElement>document.getElementById("fillThis");
     parent.innerHTML = "";
 }
-

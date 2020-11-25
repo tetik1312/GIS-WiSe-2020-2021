@@ -3,79 +3,58 @@
 
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
     <title>Document</title>
     <link rel="stylesheet" type="text/css" href="style.css">
     <script src="script.js" defer></script>
+    <!-- <script src="data.js" defer></script> -->
 </head>
 
 <body>
-    <h1>Baue deinen Körper</h1>
-    <div class="Auswahltabelle">
+    <h1>Baue deine eigene Rakete!</h1>
+    <p>Hier kannst du deine eigene Rakete zusammen stellen:</p>
 
-        <label>Kopfauswahl:
+    <div class="Absätze">
+        <label>Spitzenauswahl:</label>
+        <select>
+            <option>Keine</option>
+            <option>Viereckig</option>
+            <option>Rund</option>
+            <option>Dreieckig</option>
+
+        </select>
+
+        <img src="Viereck.png" id="Viereck">
+
+        <div class="Absätze">
+
+            <label>Rumpfauswahl:</label>
             <select>
-
-                <option>Standard</option>
-                <option>Eckig</option>
-                <option>Herz</option>
-
-            </select>
-        </label>
-
-        <label>Farbe des Kopfes:
-            <select>
-                <option>Beige</option>
-                <option>Rot</option>
-                <option>Braun</option>
-            </select>
-        </label>
-
-        <br>
-
-        <label>Rumpfauswahl:
-            <select>
-                <option>Standard</option>
+                <option>Keine</option>
+                <option>Viereckig</option>
                 <option>Rund</option>
-                <option>Eckig</option>
+                <option>Dreieckig</option>
             </select>
-        </label>
 
-        <label>Farbe des Rumpfes:
-            <select>
-                <option>Beige</option>
-                <option>Rot</option>
-                <option>Braun</option>
-            </select>
-        </label>
+            <img src="Dreieck.png" id="Dreieck">
 
-        <br>
+            <div class="Absätze">
 
-        <label>Beinauswahl:
-            <select>
-                <option>Standard</option>
-                <option>Rund</option>
-                <option>Eckig</option>
-            </select>
-        </label>
+                <label>Antriebauswahl:</label>
+                <select>
+                    <option>Keine</option>
+                    <option>Viereckig</option>
+                    <option>Rund</option>
+                    <option>Dreieckig</option>
+                </select>
 
-        <label>Farbe des Beines:
-            <select>
-                <option>Beige</option>
-                <option>Rot</option>
-                <option>Braun</option>
-            </select>
-        </label>
-    </div>
+                <img src="Kreis.png" id="Kreis">
 
-    <br>
+                <i>Los gehts! :</i>
 
-    <button>Bestätigen</button>
-    <div id="fillThis"></div>
+                <button>Bestätige deine Auswahl</button>
+            </div>
 
-    <br>
-
-    <canvas id="canvas" width="500" height="400"></canvas>
 </body>
 
 
