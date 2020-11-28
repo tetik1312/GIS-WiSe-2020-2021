@@ -1,20 +1,29 @@
 "use strict";
 var Rakete;
 (function (Rakete) {
-    Rakete.kopfAuswahl = [
-        { form: "Standard", preis: 0 },
-        { form: "Viereckig", preis: 0 },
-        { form: "Dreieckig", preis: 0 }
+    Rakete.spitzenAuswahl = [
+        { form: "Viereckig", preis: 0, bildurl: "Bilder/Spitzen/Viereck.png" },
+        { form: "Rund", preis: 0, bildurl: "Bilder/Spitzen/Kreis.png" },
+        { form: "Dreieckig", preis: 0, bildurl: "Bilder/Spitzen/Dreieck.png" }
     ];
+    let mySpitze = Rakete.spitzenAuswahl;
+    let myJSON = JSON.stringify(mySpitze);
+    console.log(myJSON);
     Rakete.rumpfAuswahl = [
-        { form: "Standard", preis: 0 },
-        { form: "Rund", preis: 0 },
-        { form: "Dreieckig", preis: 0 }
+        { form: "Viereckig", preis: 0, bildurl: "Bilder/Ruempfe/Viereckig.png" },
+        { form: "Rund", preis: 0, bildurl: "Bilder/Ruempfe/Kreis.png" },
+        { form: "Dreieckig", preis: 0, bildurl: "Bilder/Ruempfe/Dreieck.png" }
     ];
-    Rakete.beinAuswahl = [
-        { form: "Standard", preis: 0 },
-        { form: "Rund", preis: 0 },
-        { form: "Dreieckig", preis: 0 }
+    let myRumpf = Rakete.rumpfAuswahl;
+    let myJSON1 = JSON.stringify(myRumpf);
+    console.log(myJSON1);
+    Rakete.antriebAuswahl = [
+        { form: "Viereckig", preis: 0, bildurl: "Bilder/Antriebe/Viereck.png" },
+        { form: "Rund", preis: 0, bildurl: "Bilder/Antriebe/Kreis.png" },
+        { form: "Dreieckig", preis: 0, bildurl: "Bilder/Antriebe/Dreieck.png" }
     ];
+    let myAntrieb = Rakete.antriebAuswahl;
+    let myJSON2 = JSON.stringify(myAntrieb);
+    console.log(myJSON2);
 })(Rakete || (Rakete = {}));
 //# sourceMappingURL=data.js.map
