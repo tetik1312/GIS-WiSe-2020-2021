@@ -10,7 +10,7 @@ namespace Rakete {
     console.log(myJSON);
 
     export let rumpfAuswahl: Rumpf[] = [
-        { form: "Viereckig", preis: 0, bildurl: "Bilder/Ruempfe/Viereckig.png" },
+        { form: "Viereckig", preis: 0, bildurl: "Bilder/Ruempfe/Viereck.png" },
         { form: "Rund", preis: 0, bildurl: "Bilder/Ruempfe/Kreis.png" },
         { form: "Dreieckig", preis: 0, bildurl: "Bilder/Ruempfe/Dreieck.png" }
     ];
