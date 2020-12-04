@@ -104,12 +104,12 @@ namespace Rakete {
     bild(localStorage.getItem("Spitze"));
 
 
-
-
-    //Bestätigen Button um auf die nächste Seite zu kommen
-    function bestätigeDeineAuswahl(_e: Event): void {
-        let parent: HTMLDivElement = <HTMLDivElement>document.getElementById("fillThis");
-        parent.innerHTML = "";
+    async function communicate(_url: RequestInfo): Promise<void> {
+        let response: Response = await fetch(_url);
+        let result = await response.json();
+        console.log("Response", result);
     }
+    communicate("https://tetik1312.github.io/GIS-WiSe-2020-2021/Aufgabe_2.3/data.json");
+
 
 }

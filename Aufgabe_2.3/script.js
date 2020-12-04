@@ -69,10 +69,11 @@ var Rakete;
         antriebImg.setAttribute("src", localStorage.getItem("Antrieb"));
     }
     bild(localStorage.getItem("Spitze"));
-    //Bestätigen Button um auf die nächste Seite zu kommen
-    function bestätigeDeineAuswahl(_e) {
-        let parent = document.getElementById("fillThis");
-        parent.innerHTML = "";
+    async function communicate(_url) {
+        let response = await fetch(_url);
+        let result = await response.json();
+        console.log("Response", result);
     }
+    communicate("https://tetik1312.github.io/GIS-WiSe-2020-2021/Aufgabe_2.3/data.json");
 })(Rakete || (Rakete = {}));
 //# sourceMappingURL=script.js.map
