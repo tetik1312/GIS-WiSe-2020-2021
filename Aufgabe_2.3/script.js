@@ -3,7 +3,6 @@ var Rakete;
 (function (Rakete) {
     let path = window.location.pathname;
     let page = path.split("/").pop();
-    console.log(page);
     if (page == "index.html") {
         //Ausgewählte Objekte als Ausgabe in der Konsole
         let spitzeSelect = document.getElementById("spitze");
@@ -69,11 +68,39 @@ var Rakete;
         antriebImg.setAttribute("src", localStorage.getItem("Antrieb"));
     }
     bild(localStorage.getItem("Spitze"));
-    async function communicate(_url) {
-        let response = await fetch(_url);
-        let result = await response.json();
-        console.log("Response", result);
+    if (page == "rakete.html") {
+        bild(localStorage.getItem("SpitzeImg"));
+        bild(localStorage.getItem("RumpfImg"));
+        bild(localStorage.getItem("AntriebImg"));
+        serverAnfrage("https://gis-communication.herokuapp.com");
     }
-    communicate("https://tetik1312.github.io/GIS-WiSe-2020-2021/Aufgabe_2.3/data.json");
+    async function serverAnfrage(_url) {
+        let query = new URLSearchParams(localStorage);
+        _url = _url + "?" + query.toString();
+        let response = await fetch(_url);
+        let serverNachricht = await response.json();
+        let serverAntwort = document.getElementById("serverAntwort");
+        let text = document.createElement("p");
+        if (serverNachricht.message !== undefined) {
+            text.innerText = serverNachricht.message;
+        }
+        if (serverNachricht.error !== undefined) {
+            text.setAttribute("style", "color:red");
+            text.innerText = serverNachricht.error;
+        }
+        serverAntwort.appendChild(text);
+    }
+    //ich habe diesen Teil der Aufgabe nicht ganz hinbekommen (und ich weiß auch nicht was falsch ist, wenn man es aber auskommentiert dann funktioniert alles):
+    jsonLaden("https://127.0.0.1:5500/Aufgabe_2.3/data.json");
+    async function jsonLaden(_url) {
+        let response = await fetch(_url);
+        let data = await response.json();
+        localStorage.setItem("dataSpitze", JSON.stringify(data.spitzeJSON));
+        localStorage.setItem("dataRumpf", JSON.stringify(data.rumpfperJSON));
+        localStorage.setItem("dataAntrieb", JSON.stringify(data.antriebJSON));
+    }
+    let spitze = JSON.parse(localStorage.getItem("dataSpitze"));
+    let rumpf = JSON.parse(localStorage.getItem("dataRumpf"));
+    let antrieb = JSON.parse(localStorage.getItem("dataAntrieb"));
 })(Rakete || (Rakete = {}));
 //# sourceMappingURL=script.js.map
