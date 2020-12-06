@@ -90,7 +90,7 @@ var Rakete;
         }
         serverAntwort.appendChild(text);
     }
-    //ich habe diesen Teil der Aufgabe nicht ganz hinbekommen (und ich weiß auch nicht was falsch ist, wenn man es aber auskommentiert dann funktioniert alles):
+    //ich habe diesen Teil der Aufgabe nicht ganz hinbekommen
     jsonLaden("https://127.0.0.1:5500/Aufgabe_2.3/data.json");
     async function jsonLaden(_url) {
         let response = await fetch(_url);
