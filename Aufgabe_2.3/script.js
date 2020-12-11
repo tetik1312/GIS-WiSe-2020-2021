@@ -1,62 +1,67 @@
 "use strict";
 var Rakete;
 (function (Rakete) {
+    let spitzenAuswahl;
+    let rumpfAuswahl;
+    let antriebAuswahl;
     let path = window.location.pathname;
     let page = path.split("/").pop();
-    if (page == "index.html") {
-        //Ausgewählte Objekte als Ausgabe in der Konsole
-        let spitzeSelect = document.getElementById("spitze");
-        for (let i = 0; i < Rakete.spitzenAuswahl.length; i++) {
-            let newOptionElement = document.createElement("OPTION");
-            newOptionElement.innerText = Rakete.spitzenAuswahl[i].form;
-            newOptionElement.setAttribute("value", Rakete.spitzenAuswahl[i].bildurl);
-            spitzeSelect.appendChild(newOptionElement);
+    function seitenAufbau() {
+        if (page == "index.html") {
+            //Ausgewählte Objekte als Ausgabe in der Konsole
+            let spitzeSelect = document.getElementById("spitze");
+            for (let i = 0; i < spitzenAuswahl.length; i++) {
+                let newOptionElement = document.createElement("OPTION");
+                newOptionElement.innerText = spitzenAuswahl[i].form;
+                newOptionElement.setAttribute("value", spitzenAuswahl[i].bildurl);
+                spitzeSelect.appendChild(newOptionElement);
+            }
+            let rumpfSelect = document.getElementById("rumpf");
+            for (let i = 0; i < rumpfAuswahl.length; i++) {
+                let newOptionElement = document.createElement("OPTION");
+                newOptionElement.innerText = rumpfAuswahl[i].form;
+                newOptionElement.setAttribute("value", rumpfAuswahl[i].bildurl);
+                rumpfSelect.appendChild(newOptionElement);
+            }
+            let antriebSelect = document.getElementById("antrieb");
+            for (let i = 0; i < antriebAuswahl.length; i++) {
+                let newOptionElement = document.createElement("OPTION");
+                newOptionElement.innerText = antriebAuswahl[i].form;
+                newOptionElement.setAttribute("value", antriebAuswahl[i].bildurl);
+                antriebSelect.appendChild(newOptionElement);
+            }
+            //Geänderte Auswahl
+            spitzeSelect.addEventListener("change", spitzenAuswahlChanged);
+            function spitzenAuswahlChanged(_e) {
+                console.log(_e.target.value);
+                localStorage.setItem("Spitze", _e.target.value);
+                bild(localStorage.getItem("Spitze"));
+            }
+            rumpfSelect.addEventListener("change", rumpfAuswahlChanged);
+            function rumpfAuswahlChanged(_e) {
+                console.log(_e.target.value);
+                localStorage.setItem("Rumpf", _e.target.value);
+                bild(localStorage.getItem("Rumpf"));
+            }
+            antriebSelect.addEventListener("change", antriebAuswahlChanged);
+            function antriebAuswahlChanged(_e) {
+                console.log(_e.target.value);
+                localStorage.setItem("Antrieb", _e.target.value);
+                bild(localStorage.getItem("Antrieb"));
+            }
+            if (localStorage.getItem("Spitze") == null) {
+                localStorage.setItem("Spitze", spitzenAuswahl[0].bildurl);
+            }
+            spitzeSelect.value = localStorage.getItem("Spitze");
+            if (localStorage.getItem("Rumpf") == null) {
+                localStorage.setItem("Rumpf", rumpfAuswahl[0].bildurl);
+            }
+            rumpfSelect.value = localStorage.getItem("Rumpf");
+            if (localStorage.getItem("Antrieb") == null) {
+                localStorage.setItem("Antrieb", antriebAuswahl[0].bildurl);
+            }
+            antriebSelect.value = localStorage.getItem("Antrieb");
         }
-        let rumpfSelect = document.getElementById("rumpf");
-        for (let i = 0; i < Rakete.rumpfAuswahl.length; i++) {
-            let newOptionElement = document.createElement("OPTION");
-            newOptionElement.innerText = Rakete.rumpfAuswahl[i].form;
-            newOptionElement.setAttribute("value", Rakete.rumpfAuswahl[i].bildurl);
-            rumpfSelect.appendChild(newOptionElement);
-        }
-        let antriebSelect = document.getElementById("antrieb");
-        for (let i = 0; i < Rakete.antriebAuswahl.length; i++) {
-            let newOptionElement = document.createElement("OPTION");
-            newOptionElement.innerText = Rakete.antriebAuswahl[i].form;
-            newOptionElement.setAttribute("value", Rakete.antriebAuswahl[i].bildurl);
-            antriebSelect.appendChild(newOptionElement);
-        }
-        //Geänderte Auswahl
-        spitzeSelect.addEventListener("change", spitzenAuswahlChanged);
-        function spitzenAuswahlChanged(_e) {
-            console.log(_e.target.value);
-            localStorage.setItem("Spitze", _e.target.value);
-            bild(localStorage.getItem("Spitze"));
-        }
-        rumpfSelect.addEventListener("change", rumpfAuswahlChanged);
-        function rumpfAuswahlChanged(_e) {
-            console.log(_e.target.value);
-            localStorage.setItem("Rumpf", _e.target.value);
-            bild(localStorage.getItem("Rumpf"));
-        }
-        antriebSelect.addEventListener("change", antriebAuswahlChanged);
-        function antriebAuswahlChanged(_e) {
-            console.log(_e.target.value);
-            localStorage.setItem("Antrieb", _e.target.value);
-            bild(localStorage.getItem("Antrieb"));
-        }
-        if (localStorage.getItem("Spitze") == null) {
-            localStorage.setItem("Spitze", Rakete.spitzenAuswahl[0].bildurl);
-        }
-        spitzeSelect.value = localStorage.getItem("Spitze");
-        if (localStorage.getItem("Rumpf") == null) {
-            localStorage.setItem("Rumpf", Rakete.rumpfAuswahl[0].bildurl);
-        }
-        rumpfSelect.value = localStorage.getItem("Rumpf");
-        if (localStorage.getItem("Antrieb") == null) {
-            localStorage.setItem("Antrieb", Rakete.antriebAuswahl[0].bildurl);
-        }
-        antriebSelect.value = localStorage.getItem("Antrieb");
     }
     //Bild Ausgabe
     function bild(_imgString) {
@@ -90,17 +95,17 @@ var Rakete;
         }
         serverAntwort.appendChild(text);
     }
-    //ich habe diesen Teil der Aufgabe nicht ganz hinbekommen
-    jsonLaden("https://127.0.0.1:5500/Aufgabe_2.3/data.json");
+    jsonLaden("data.json");
     async function jsonLaden(_url) {
         let response = await fetch(_url);
         let data = await response.json();
-        localStorage.setItem("dataSpitze", JSON.stringify(data.spitzeJSON));
-        localStorage.setItem("dataRumpf", JSON.stringify(data.rumpfperJSON));
-        localStorage.setItem("dataAntrieb", JSON.stringify(data.antriebJSON));
+        spitzenAuswahl = data.spitzeListe;
+        rumpfAuswahl = data.rumpfListe;
+        antriebAuswahl = data.antriebListe;
+        seitenAufbau();
     }
-    let spitze = JSON.parse(localStorage.getItem("dataSpitze"));
-    let rumpf = JSON.parse(localStorage.getItem("dataRumpf"));
-    let antrieb = JSON.parse(localStorage.getItem("dataAntrieb"));
+    /*let spitzenAuswahl: Array<Spitze> = JSON.parse(localStorage.getItem("spitzeListe"));
+    let rumpfAuswahl: Array<Rumpf> = JSON.parse(localStorage.getItem("rumpfListe"));
+    let antriebAuswahl: Array<Antrieb> = JSON.parse(localStorage.getItem("antriebListe"));*/
 })(Rakete || (Rakete = {}));
 //# sourceMappingURL=script.js.map

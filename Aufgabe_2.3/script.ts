@@ -12,83 +12,97 @@ namespace Rakete {
 
     export interface Antrieb extends Raketenteil { }
 
+    interface Raketenteilliste {
+        spitzeListe: Raketenteil[];
+        rumpfListe: Raketenteil[];
+        antriebListe: Raketenteil[];
+    }
+
+
+    let spitzenAuswahl: Raketenteil[];
+    let rumpfAuswahl: Raketenteil[];
+    let antriebAuswahl: Raketenteil[];
 
     let path: string = window.location.pathname;
     let page: string = path.split("/").pop();
 
+    function seitenAufbau(): void {
 
-    if (page == "index.html") {
+        if (page == "index.html") {
 
 
-        //Ausgewählte Objekte als Ausgabe in der Konsole
-        let spitzeSelect: HTMLSelectElement = <HTMLSelectElement>document.getElementById("spitze");
 
-        for (let i: number = 0; i < spitzenAuswahl.length; i++) {
-            let newOptionElement: HTMLOptionElement = <HTMLOptionElement>document.createElement("OPTION");
-            newOptionElement.innerText = spitzenAuswahl[i].form;
-            newOptionElement.setAttribute("value", spitzenAuswahl[i].bildurl);
-            spitzeSelect.appendChild(newOptionElement);
+            //Ausgewählte Objekte als Ausgabe in der Konsole
+            let spitzeSelect: HTMLSelectElement = <HTMLSelectElement>document.getElementById("spitze");
+
+            for (let i: number = 0; i < spitzenAuswahl.length; i++) {
+                let newOptionElement: HTMLOptionElement = <HTMLOptionElement>document.createElement("OPTION");
+                newOptionElement.innerText = spitzenAuswahl[i].form;
+                newOptionElement.setAttribute("value", spitzenAuswahl[i].bildurl);
+                spitzeSelect.appendChild(newOptionElement);
+            }
+
+            let rumpfSelect: HTMLSelectElement = <HTMLSelectElement>document.getElementById("rumpf");
+
+            for (let i: number = 0; i < rumpfAuswahl.length; i++) {
+                let newOptionElement: HTMLOptionElement = <HTMLOptionElement>document.createElement("OPTION");
+                newOptionElement.innerText = rumpfAuswahl[i].form;
+                newOptionElement.setAttribute("value", rumpfAuswahl[i].bildurl);
+                rumpfSelect.appendChild(newOptionElement);
+            }
+
+            let antriebSelect: HTMLSelectElement = <HTMLSelectElement>document.getElementById("antrieb");
+
+            for (let i: number = 0; i < antriebAuswahl.length; i++) {
+                let newOptionElement: HTMLOptionElement = <HTMLOptionElement>document.createElement("OPTION");
+                newOptionElement.innerText = antriebAuswahl[i].form;
+                newOptionElement.setAttribute("value", antriebAuswahl[i].bildurl);
+                antriebSelect.appendChild(newOptionElement);
+            }
+
+
+            //Geänderte Auswahl
+            spitzeSelect.addEventListener("change", spitzenAuswahlChanged);
+
+            function spitzenAuswahlChanged(_e: Event): void {
+                console.log((<HTMLOptionElement>_e.target).value);
+                localStorage.setItem("Spitze", (<HTMLOptionElement>_e.target).value);
+                bild(localStorage.getItem("Spitze"));
+            }
+
+            rumpfSelect.addEventListener("change", rumpfAuswahlChanged);
+
+            function rumpfAuswahlChanged(_e: Event): void {
+                console.log((<HTMLOptionElement>_e.target).value);
+                localStorage.setItem("Rumpf", (<HTMLOptionElement>_e.target).value);
+                bild(localStorage.getItem("Rumpf"));
+            }
+
+            antriebSelect.addEventListener("change", antriebAuswahlChanged);
+
+            function antriebAuswahlChanged(_e: Event): void {
+                console.log((<HTMLOptionElement>_e.target).value);
+                localStorage.setItem("Antrieb", (<HTMLOptionElement>_e.target).value);
+                bild(localStorage.getItem("Antrieb"));
+            }
+
+
+            if (localStorage.getItem("Spitze") == null) {
+                localStorage.setItem("Spitze", spitzenAuswahl[0].bildurl);
+            }
+            spitzeSelect.value = localStorage.getItem("Spitze");
+
+            if (localStorage.getItem("Rumpf") == null) {
+                localStorage.setItem("Rumpf", rumpfAuswahl[0].bildurl);
+            }
+            rumpfSelect.value = localStorage.getItem("Rumpf");
+
+            if (localStorage.getItem("Antrieb") == null) {
+                localStorage.setItem("Antrieb", antriebAuswahl[0].bildurl);
+            }
+            antriebSelect.value = localStorage.getItem("Antrieb");
+
         }
-
-        let rumpfSelect: HTMLSelectElement = <HTMLSelectElement>document.getElementById("rumpf");
-
-        for (let i: number = 0; i < rumpfAuswahl.length; i++) {
-            let newOptionElement: HTMLOptionElement = <HTMLOptionElement>document.createElement("OPTION");
-            newOptionElement.innerText = rumpfAuswahl[i].form;
-            newOptionElement.setAttribute("value", rumpfAuswahl[i].bildurl);
-            rumpfSelect.appendChild(newOptionElement);
-        }
-
-        let antriebSelect: HTMLSelectElement = <HTMLSelectElement>document.getElementById("antrieb");
-
-        for (let i: number = 0; i < antriebAuswahl.length; i++) {
-            let newOptionElement: HTMLOptionElement = <HTMLOptionElement>document.createElement("OPTION");
-            newOptionElement.innerText = antriebAuswahl[i].form;
-            newOptionElement.setAttribute("value", antriebAuswahl[i].bildurl);
-            antriebSelect.appendChild(newOptionElement);
-        }
-
-
-        //Geänderte Auswahl
-        spitzeSelect.addEventListener("change", spitzenAuswahlChanged);
-
-        function spitzenAuswahlChanged(_e: Event): void {
-            console.log((<HTMLOptionElement>_e.target).value);
-            localStorage.setItem("Spitze", (<HTMLOptionElement>_e.target).value);
-            bild(localStorage.getItem("Spitze"));
-        }
-
-        rumpfSelect.addEventListener("change", rumpfAuswahlChanged);
-
-        function rumpfAuswahlChanged(_e: Event): void {
-            console.log((<HTMLOptionElement>_e.target).value);
-            localStorage.setItem("Rumpf", (<HTMLOptionElement>_e.target).value);
-            bild(localStorage.getItem("Rumpf"));
-        }
-
-        antriebSelect.addEventListener("change", antriebAuswahlChanged);
-
-        function antriebAuswahlChanged(_e: Event): void {
-            console.log((<HTMLOptionElement>_e.target).value);
-            localStorage.setItem("Antrieb", (<HTMLOptionElement>_e.target).value);
-            bild(localStorage.getItem("Antrieb"));
-        }
-
-
-        if (localStorage.getItem("Spitze") == null) {
-            localStorage.setItem("Spitze", spitzenAuswahl[0].bildurl);
-        }
-        spitzeSelect.value = localStorage.getItem("Spitze");
-
-        if (localStorage.getItem("Rumpf") == null) {
-            localStorage.setItem("Rumpf", rumpfAuswahl[0].bildurl);
-        }
-        rumpfSelect.value = localStorage.getItem("Rumpf");
-
-        if (localStorage.getItem("Antrieb") == null) {
-            localStorage.setItem("Antrieb", antriebAuswahl[0].bildurl);
-        }
-        antriebSelect.value = localStorage.getItem("Antrieb");
     }
 
     //Bild Ausgabe
@@ -141,19 +155,20 @@ namespace Rakete {
         error: string;
     }
 
-//ich habe diesen Teil der Aufgabe nicht ganz hinbekommen
-    jsonLaden("https://127.0.0.1:5500/Aufgabe_2.3/data.json");
+                                
+    jsonLaden("data.json");
 
     async function jsonLaden(_url: RequestInfo): Promise<void> {
         let response: Response = await fetch(_url);
-        let data = await response.json();
-        localStorage.setItem("dataSpitze", JSON.stringify(data.spitzeJSON));
-        localStorage.setItem("dataRumpf", JSON.stringify(data.rumpfperJSON));
-        localStorage.setItem("dataAntrieb", JSON.stringify(data.antriebJSON));
+        let data: Raketenteilliste = await response.json();
+        spitzenAuswahl = data.spitzeListe;
+        rumpfAuswahl = data.rumpfListe;
+        antriebAuswahl = data.antriebListe;
+        seitenAufbau();
 
     }
-    let spitze : Array<Spitze> = JSON.parse(localStorage.getItem("dataSpitze"));
-    let rumpf : Array<Rumpf> = JSON.parse(localStorage.getItem("dataRumpf"));
-    let antrieb : Array<Antrieb> = JSON.parse(localStorage.getItem("dataAntrieb"));
+    /*let spitzenAuswahl: Array<Spitze> = JSON.parse(localStorage.getItem("spitzeListe"));
+    let rumpfAuswahl: Array<Rumpf> = JSON.parse(localStorage.getItem("rumpfListe"));
+    let antriebAuswahl: Array<Antrieb> = JSON.parse(localStorage.getItem("antriebListe"));*/
 
 }
