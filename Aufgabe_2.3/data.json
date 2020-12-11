@@ -1,6 +1,6 @@
 {
-    
-    "Spitze": [
+
+    "spitzeListe": [
         {
             "form": "Viereckig",
             "preis": 0,
@@ -17,7 +17,7 @@
             "bildurl": "Bilder/Spitzen/Dreieck.png"
         }
     ],
-    "Rumpf": [
+    "rumpfListe": [
         {
             "form": "Viereckig",
             "preis": 0,
@@ -34,7 +34,7 @@
             "bildurl": "Bilder/Ruempfe/Dreieck.png"
         }
     ],
-    "Antrieb": [
+    "antriebListe": [
         {
             "form": "Viereckig",
             "preis": 0,
