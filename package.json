@@ -6,7 +6,7 @@
   "dependencies": {},
   "devDependencies": {},
   "scripts": {
-    "start": "node GIS-WiSe-2020-2021/Aufgabe_3.1/server.js"
+    "start": "node Aufgabe_3.1/server.js"
   },
   "author": "asya tetik",
   "license": "ISC"
