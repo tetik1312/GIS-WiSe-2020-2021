@@ -1,27 +1,31 @@
 <!DOCTYPE html>
 <html lang="en">
-  <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Document</title>
-    <link rel="stylesheet" type="text/css" href="style.css"/>
-    <script src="script.js" defer></script>
-  </head>
-  
-  <body>
-    <div class="container">
-      <form action="http://localhost:8100/" method="get">
-        <label for="fname">Vorname:</label>
-        <input type="text" name="fname" />
-        <label for="fname">Nachname:</label>
-        <input type="text" name="lname" />
-        <label for="lname">Alter:</label>
-        <input type="number" />
-        <label for="fname">Mail-Adresse:</label>
-        <input type="text" name="eadresse" />
 
-        <button type="submit">Abschicken</button>
-      </form>
-    </div>
-  </body>
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Document</title>
+  <link rel="stylesheet" type="text/css" href="style.css" />
+  <script src="script.js" defer></script>
+</head>
+
+<body>
+  <div class="container">
+    <h1 id="kontakt"> Füllen Sie dieses Kontaktformular aus:</h1>
+    <form action="https://supernova22.herokuapp.com/" id="formular-form" method="get">
+
+      <label for="fname">Vorname:</label>
+      <input type="text" name="fname" />
+      <label for="fname">Nachname:</label>
+      <input type="text" name="lname" />
+      <label for="lname">Alter:</label>
+      <input type="number" />
+      <label for="fname">Mail-Adresse:</label>
+      <input type="text" name="eadresse" />
+
+      <button id="submit" name="Absenden" type="button">Abschicken</button>
+    </form>
+  </div>
+</body>
+
 </html>
