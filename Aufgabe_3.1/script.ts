@@ -14,13 +14,12 @@ async function submitToServer(_event: Event): Promise<void> {
 
     url = url + "?" + query.toString();
     console.log(url);
+    
 
-    let response: Response = await fetch(url);
+    let response: Response = await fetch(url + "?" + query.toString());
     let responseText: string = await response.text();
     console.log(response);
-
-    await fetch(url + "?" + query.toString());
-    alert("Response: " + responseText);
+    alert(responseText);
 
 }
 

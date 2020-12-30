@@ -9,11 +9,10 @@ async function submitToServer(_event) {
     let query = new URLSearchParams(formData);
     url = url + "?" + query.toString();
     console.log(url);
-    let response = await fetch(url);
+    let response = await fetch(url + "?" + query.toString());
     let responseText = await response.text();
     console.log(response);
-    await fetch(url + "?" + query.toString());
-    alert("Response: " + responseText);
+    alert(responseText);
 }
 async function communicate(_url) {
     let response = await fetch(_url);
