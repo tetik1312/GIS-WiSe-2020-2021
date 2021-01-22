@@ -16,7 +16,7 @@ export interface User extends BaseUser {
 }
 
 // mongo url
-const mongoUrl: string = "mongodb+srv://TestAsya:Program2020@cluster0.q7enn.mongodb.net/Test?retryWrites=true&w=majority";
+const mongoUrl: string = "mongodb+srv://TestAsya2:12345@cluster0.q7enn.mongodb.net/Test?retryWrites=true&w=majority";
 const databaseName: string = "users";
 
 async function connectDB(): Promise<Collection> {

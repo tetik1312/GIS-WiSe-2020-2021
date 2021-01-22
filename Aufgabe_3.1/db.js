@@ -3,12 +3,12 @@ Object.defineProperty(exports, "__esModule", { value: true });
 exports.findUserByEmailAndPass = exports.getUsers = exports.createUser = void 0;
 const mongodb_1 = require("mongodb");
 // mongo url
-const mongoUrl = "mongodb+srv://TestAsya:<password>@cluster0.q7enn.mongodb.net/<dbname>?retryWrites=true&w=majority";
+const mongoUrl = "mongodb+srv://TestAsya2:12345@cluster0.q7enn.mongodb.net/Test?retryWrites=true&w=majority";
 const databaseName = "users";
 async function connectDB() {
     let db;
     let client;
-    // try to connect to mongo
+    // versucht sich mit mongo zu verbinden
     try {
         client = await mongodb_1.MongoClient.connect(mongoUrl, {
             useNewUrlParser: true,
@@ -18,41 +18,42 @@ async function connectDB() {
     }
     catch (error) {
         console.error("Error connecting to database: ", error);
-        // throw error and return
+        // wirft einen fehler und kehrt zurück
         return process.exit(1);
     }
-    // set database to use
+    // legt die zu verwendende datenbank fest 
     db = client.db(databaseName);
-    // set collection
+    // stellt die collection ein 
     const collection = db.collection("users");
     return collection;
 }
 async function createUser(user) {
-    // get db with collection
+    // ruft die datenbank mit collection ab
     const collection = await connectDB();
-    // check if user already exists in this collection
+    // überprüft ob der benutzer bereits in dieser collection vorhanden ist 
     const userExists = await collection.findOne({ email: user.email });
     if (userExists) {
-        // throw Error if so to interact the script and prevent inserting duplicate value
+        // wenn ein nutzer bereits existiert wird ein fehler ausgelöst welches mit dem script
+        // interagiert um das einfügen eines doppelten wertes zu verhindern
         throw new Error("User with this email already exists");
     }
-    // insert new user to database
+    // fügt neuen benutzer in die datenbank ein 
     const data = await collection.insertOne(user);
-    // return data
+    // gibt die daten zurück
     return data.ops[0];
 }
 exports.createUser = createUser;
 async function getUsers() {
-    // get db with collection
+    // datenbank mit collection abrufen
     const collection = await connectDB();
-    // find all, transform result to array and return
+    // findet alle daten und wandelt die ergebnisse in ein array um und gibt sie zurück 
     return await collection.find().toArray();
 }
 exports.getUsers = getUsers;
 async function findUserByEmailAndPass(data) {
-    // get db with collection
+    // holt sich die datenbank durch collection
     const collection = await connectDB();
-    //find one and return result
+    //findet eins (findone) und gibt das ergebnis zurück
     return await collection.findOne(data);
 }
 exports.findUserByEmailAndPass = findUserByEmailAndPass;

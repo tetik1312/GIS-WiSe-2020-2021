@@ -30,11 +30,11 @@ var P_3_1Server;
             _request.on("data", (data) => {
                 body += data;
                 _request.on("end", async () => {
-                    // post data from front is an object which contain any values
-                    // though we can define the type for oath we have
+                    // post daten vom frontend ist ein objekt welches beliebige werte enthaelt
+                    // obwohl wir den typ dafür definieren können, was wir haben
                     if (_request.url === "/login") {
                         const post = JSON.parse(body);
-                        // use try catch to catch an error if something goes wrong
+                        // verwende try catch um einen fehler abzufangen, wenn etwas schief geht
                         db_1.findUserByEmailAndPass({ email: post.email, password: post.password })
                             .then((user) => {
                             let responseText = "";
@@ -44,12 +44,12 @@ var P_3_1Server;
                             else {
                                 responseText = "User Not Found";
                             }
-                            // send success
+                            // sendet es mit erfolg
                             _response.write(responseText);
                             _response.end();
                         })
                             .catch((error) => {
-                            // set status code to define that we have an error
+                            // legt den statuscode fest, um zu definieren dass ein fehler vorliegt
                             _response.statusCode = 501;
                             _response.write(error.message);
                             _response.end();
@@ -57,15 +57,15 @@ var P_3_1Server;
                     }
                     else {
                         const post = JSON.parse(body);
-                        // use try catch to catch an error if something goes wrong
+                        // verwende try catch um einen fehler abzufangen, wenn etwas schief geht
                         db_1.createUser(post)
                             .then((user) => {
-                            // send success
+                            // sendet es mit erfolg
                             _response.write(JSON.stringify(user));
                             _response.end();
                         })
                             .catch((error) => {
-                            // set status code to define that we have an error
+                            // legt den statuscode fest, um zu definieren dass ein fehler vorliegt
                             _response.statusCode = 501;
                             _response.write(error.message);
                             _response.end();
@@ -77,12 +77,12 @@ var P_3_1Server;
         else if (_request.method === "GET") {
             db_1.getUsers()
                 .then((users) => {
-                // send success
+                // sendet es mit erfolg
                 _response.write(JSON.stringify(users));
                 _response.end();
             })
                 .catch((error) => {
-                // set status code to define that we have an error
+                // legt den statuscode fest, um zu definieren dass ein fehler vorliegt
                 _response.statusCode = 501;
                 _response.write(error.message);
                 _response.end();
