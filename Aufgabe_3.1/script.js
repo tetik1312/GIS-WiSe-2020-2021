@@ -1,7 +1,7 @@
 "use strict";
 var Kapitelaufgabe;
 (function (Kapitelaufgabe) {
-    let url = "http://supernova22.herokuapp.com/";
+    let url = "https://supernova22.herokuapp.com/";
     //let url: string = "http://localhost:8100/";
     // definiert html elemente, kann entweder das element sein oder undefined, abhänging von der seite 
     let signupForm;
