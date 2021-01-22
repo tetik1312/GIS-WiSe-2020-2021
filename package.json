@@ -3,7 +3,10 @@
   "version": "1.0.0",
   "description": "",
   "main": "index.js",
-  "dependencies": {},
+  "dependencies": {
+    "@types/mongodb": "^3.6.3",
+    "mongodb": "^3.6.3"
+  },
   "devDependencies": {},
   "scripts": {
     "start": "node Aufgabe_3.1/server.js"
