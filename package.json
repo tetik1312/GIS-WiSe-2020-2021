@@ -9,7 +9,7 @@
   },
   "devDependencies": {},
   "scripts": {
-    "start": "node Pruefungsaufgabe/server.js"
+    "start": "node /app/Pruefungsaufgabe/server.js"
   },
   "author": "asya tetik",
   "license": "ISC"
