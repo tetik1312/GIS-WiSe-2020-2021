@@ -30,11 +30,11 @@ var P_3_1Server;
                 body += data;
             });
             _request.on("end", async () => {
-                // post data from front is an object which contain any values
-                // though we can define the type for oath we have
+                // post data vom front ist ein object das beliebige Werte enthält
+                // obwohl wir den typ für das definieren können, was wir haben
                 const post = JSON.parse(body);
                 if (url === "/signup") {
-                    // if url is signup, we should register a user
+                    // wenn die url signup ist, sollte es einen benutzer registrieren
                     User_1.createUser({
                         firstName: post.firstName,
                         lastName: post.lastName,
@@ -43,16 +43,16 @@ var P_3_1Server;
                         age: post.age
                     })
                         .then(() => {
-                        // send success
+                        // sende success
                         endResponse(_response, "User created");
                     })
                         .catch((error) => {
-                        // on error catch error and send it to front
+                        // bei error, error abfangen und zum front schicken
                         onError(_response, error);
                     });
                 }
                 else if (url === "/profile") {
-                    // update profile with recieved user id
+                    // profil mit erhaltener user id updaten
                     User_1.updateProfile(post.userId, {
                         firstName: post.firstName,
                         lastName: post.lastName,
@@ -61,8 +61,8 @@ var P_3_1Server;
                         password: post.password
                     })
                         .then((data) => {
-                        // stringify array to string to send to front, as our response header is text
-                        // we could also set response header to send json instead
+                        // stringify array zu string, um es zum front zu senden, da der response header text ist
+                        // wir könnten auch den response header so einstellen das stattdessen json gesendet wird
                         endResponse(_response, JSON.stringify(data));
                     })
                         .catch((error) => {
@@ -70,11 +70,11 @@ var P_3_1Server;
                     });
                 }
                 else if (url === "/login") {
-                    // try to login user with email and password
+                    // versucht den user mit email und password einzuloggen
                     User_1.findUserByEmailAndPass(post.email, post.password)
                         .then((data) => {
                         if (data) {
-                            // stringify array to string to send to front, as our response header is text
+                            // stringify array zu string um es zum frontend zu senden, da der response header text ist
                             endResponse(_response, JSON.stringify(data));
                         }
                         else {
@@ -86,13 +86,13 @@ var P_3_1Server;
                     });
                 }
                 else if (url === "/posts") {
-                    // create a new post with userId recieved
+                    // create einen neuen post mit der empfangenen userId 
                     Post_1.createPost(post.userId, {
                         title: post.title,
                         content: post.content
                     })
                         .then((data) => {
-                        // stringify array to string to send to front, as our response header is text
+                        // stringify array zu string um es zum front zu senden, da der response header text ist
                         endResponse(_response, JSON.stringify(data));
                     })
                         .catch((error) => {
@@ -100,7 +100,7 @@ var P_3_1Server;
                     });
                 }
                 else if (url === "/get-posts") {
-                    // get all posts of user and followed users, if userId exists
+                    // get posts von usern und den gefolgten usern, wenn eine userId vorhanden ist
                     Post_1.getPosts(post.userId)
                         .then((data) => {
                         endResponse(_response, JSON.stringify(data));
@@ -110,7 +110,7 @@ var P_3_1Server;
                     });
                 }
                 else if (url === "/users/follow") {
-                    // follow user by followId recieved, userId is id of logged in user
+                    // followed den user durch followId, userId ist die id des logged in users
                     User_1.follow(post.userId, post.followId)
                         .then((data) => {
                         endResponse(_response, JSON.stringify(data));
@@ -120,7 +120,7 @@ var P_3_1Server;
                     });
                 }
                 else if (url === "/users/unfollow") {
-                    // unfollow user by followId recieved, userId is id of logged in user
+                    // unfollow den user von der followId die empfangen wurde, userId ist id vom eingeloggten user
                     User_1.unfollow(post.userId, post.followId)
                         .then((data) => {
                         endResponse(_response, JSON.stringify(data));
@@ -130,18 +130,18 @@ var P_3_1Server;
                     });
                 }
                 else {
-                    // if any url didnt match, resolve response
+                    // wenn eine url nicht übereinstimmt, löse die antwort auf 
                     _response.end();
                 }
             });
         }
         else if (method === "GET") {
-            // if we recieved get method
+            // warten bis antwort emfangen haben dann GET method
             if (url === "/users") {
-                // get list of all users
+                // liste aller user abrufen
                 User_1.getUsers()
                     .then((data) => {
-                    // stringify array to string to send to front, as our response header is text
+                    // stringify array zu string um zum frontend zu senden, da die response header text ist
                     endResponse(_response, JSON.stringify(data));
                 })
                     .catch((error) => {
@@ -149,42 +149,42 @@ var P_3_1Server;
                 });
             }
             else {
-                // if routes dont match resolve response
+                // wenn die routen nicht übereinstimmen dann die antwort auflösen
                 _response.end();
             }
         }
         else {
-            // if method dont match resolve response
+            // wenn method nicht überseinstimmt antwort auflösen
             _response.end();
         }
     }
     function onError(_response, error) {
         console.log(error);
         let responseText = "";
-        // check if error is passed, the error is a MongoError.
-        // error.code === 11000 means attempt to insert duplicate value
-        // in out case we set email as unique field
+        // überprüfuen ob error übergeben wurde, der error ist ein MongoError.
+        // error.code === 11000 bedeutet den versuch einen doppelten wert einzufügen
+        // in dem fall wird die email als eindeutiges feld festgelegt
         if (error && error instanceof mongodb_1.MongoError && error.code === 11000) {
             responseText = "Email already in use";
         }
         else {
-            // some other error occured
+            // ein anderer error ist aufgetreten
             responseText = "An error occured";
         }
         endResponse(_response, responseText, true);
     }
     function endResponse(_response, responseText, isError = false) {
-        // set header
+        // header setzen
         _response.setHeader("content-type", "text/html; charset=utf-8");
         _response.setHeader("Access-Control-Allow-Origin", "*");
-        // if isError is passed and its true, we should set status to 501
+        // wenn isError übergeben wurde und true ist, sollten wir den status auf 501 setzen
         if (isError) {
             _response.statusCode = 501;
         }
         else {
             _response.statusCode = 200;
         }
-        // set text and end
+        // text setzen und beenden
         _response.write(responseText);
         _response.end();
     }

@@ -1,6 +1,6 @@
 namespace Chatter {
-    let apiUrl: string = "https://supernova22.herokuapp.com/";
-    //let apiUrl: string = "http://localhost:8100";
+    //let apiUrl: string = "https://supernova22.herokuapp.com/";
+    let apiUrl: string = "http://localhost:8100";
 
     interface IFormData<TValue> {
         // [key: string] bedeutet das der key im object ein beliebiger wert sein kann, wir definieren jedoch den type für den string

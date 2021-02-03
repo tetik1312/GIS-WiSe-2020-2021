@@ -3,65 +3,65 @@ Object.defineProperty(exports, "__esModule", { value: true });
 exports.getPosts = exports.createPost = void 0;
 const db_1 = require("./db");
 const User_1 = require("./User");
-// collection name to query the database
+// collection name zum abfragen der datenbank
 const collectionName = "posts";
-// create post with provided data with user
+// create post mit bereitgestellten daten mit user erstellen
 async function createPost(userId, data) {
-    // first, we need to find user by id to identify him and attach user.id to new created post
+    // zuerst müssen wir den user anhand seiner id finden um ihn zu identifizieren und den user.id an den vom neu erstellten post anzuhängen
     const user = await User_1.findUserById(userId);
-    // if user is valid create a post
+    // wenn user gültig ist erstelle einen post
     if (user) {
-        // create object to insert to database
+        // create object das in die db eingefügt werden soll
         const post = {
             title: data.title,
             content: data.content,
             userId: user._id,
             createdAt: new Date()
         };
-        // connect database and get collection
+        // connecte db und rufe collection ab
         const collection = await db_1.getCollection(collectionName);
-        // finally insert the post to database
+        // zum schluss wird der post in die db eingefügt
         const newPost = await collection.insertOne(post);
-        // transform result to Post interface, add all returned fields of newPost post object (CreatedPost interface) and attach user object
+        // transformiert das ergebnis zu Post interface, fügt alle returned felder von newPost post object (CreatedPost interface) hinzu und hängt user object an
         return { ...newPost.ops[0], user };
     }
-    // return null if user was not found by id
+    // return null wenn user nicht anhand der id gefunden wurde
     return null;
 }
 exports.createPost = createPost;
-// get all posts or only posts of users one is following
+// holt alle posts oder nur posts von usern denen er folgt
 async function getPosts(userId) {
-    // connect db with collection
+    // connecte db mit collection
     const collection = await db_1.getCollection(collectionName);
-    // define query variable, we will have user's ids here if user  is logged in
+    // query (abfrage) variable wird definiert, hier hat man die user ids wenn der user eingeloggt ist
     let query = {};
-    // if user is logged in - get his posts and posts of users hes following
+    // wenn user eingelogged ist - erhalte seine posts und posts von usern denen er folgt
     if (userId) {
         const user = await User_1.findUserById(userId);
-        // check if user is found and continue if so
+        // überprüfe ob ein user gefunden wurde und fahre in dem fall fort
         if (user) {
             const ids = [];
-            // push logged in user id
+            // pusht eingeloggte user id
             ids.push(user._id);
-            // if user is following anyone, he will have an array of ids, add them
+            // wenn user jemandem folgt, verfügt er über arrays von ids, hier werden diese hinzugefügt
             if (user.users) {
-                // push ids of users thats being followed
+                // pusht ids von usern denen gefolgt wird
                 ids.push(...user.users);
             }
-            // finally set query with all ids founds, userwise it will be empty object
+            // setzt schließlich querys mit allen gefundenen ids, andererseits wird das object leer sein
             query = { userId: { $in: ids } };
         }
     }
-    // query database with aggregate method
+    // query db mit einer aggregate method
     const posts = await collection
         .aggregate([
-        // set conditions which posts to find by user id,
-        // if user is not logged in query will be an empty object and we will see posts of all users
+        // legt bedingung fest nach denen posts anhand der user id gesucht werden soll,
+        // wenn user nicht eingelogged ist, ist query (abfrage) ein leeres object und es werden posts von allen usern angezeigt
         { $match: query },
-        // Lookup linked users
-        // we join users table, by matching userId on posts collection (localField)
-        // and users.id on users table (foreignField)
-        // and get new columns users (as), this will return us array
+        // sucht nach verknüpften usern
+        // wir verbinden user tabelle, indem die userId für die auf posts collection (localField) angepasst wird 
+        // und users.id auf der user tabelle (foreignField)
+        // und neue columns die users erhalten, dies gibt einen array zurück
         {
             $lookup: {
                 from: "users",
@@ -70,25 +70,25 @@ async function getPosts(userId) {
                 as: "users"
             }
         },
-        // set fields that sould be returned
+        // legt felder fest die zurückgegeben werden sollen
         {
             $project: {
-                // here we transform our users array we got above into a signle user object,
-                // since post can have just one user (owner of the post)
+                // hier werden die user arrays das wir oben erhalten haben in ein einzelnes user object transformiert,
+                // da der post nur einen user haben kann (eigentümer des posts)
                 user: { $arrayElemAt: ["$users", 0] },
-                // set rest of the fields
+                // stellt den rest der felder ein
                 _id: "$id",
                 title: "$title",
                 content: "$content",
                 createdAt: "$createdAt"
             }
         },
-        //sort by dat, newly posts first
+        // sortiert es nach datum, und neueste posts kommen zuerst
         {
             $sort: { createdAt: -1 }
         }
     ])
-        // convert result to an array
+        // ergebnis wird in ein array konvertiert
         .toArray();
     return posts;
 }

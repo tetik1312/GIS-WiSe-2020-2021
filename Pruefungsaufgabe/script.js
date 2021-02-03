@@ -1,177 +1,177 @@
 "use strict";
 var Chatter;
 (function (Chatter) {
-    //let apiUrl: string = "http://supernova22.herokuapp.com/";
+    //let apiUrl: string = "https://supernova22.herokuapp.com/";
     let apiUrl = "http://localhost:8100";
     const path = window.location.pathname;
     const page = path.split("/").pop();
     if (page === "index.html") {
-        // get all posts if we're on index page
+        // holt sich alle posts wenn wir auf der index seite sind
         getAndRenderPosts();
     }
     else if (page === "users.html") {
-        // get all users if we're on users page
+        // holt sich alle users wenn wir auf der user seite sind
         getAndRenderUsers();
     }
-    // define forms variables
+    // definiert formularvariablen
     let signupForm;
     let loginForm;
     let postsForm;
     let profileForm;
-    // we wait for window to load and html to render, so we wont get underfined on getElementById
+    // wir warten bis das fenster geladen und das html gerendert ist, damit wir bei getElementById nicht 'undefined' bekommen
     window.addEventListener("load", onWindowLoad);
-    // depending on the page attach submit event with params
+    // abhängig von der seite hängt das submit event mit den parametern an 
     function onWindowLoad() {
-        // here depending of which page is opened,
-        // we need to define our forms, add submit listener, prevent its default behaviour
-        // add depending on the page make various actions
+        // je nach dem welche seite geöffnet ist,
+        // müssen wir unsere formulare definieren, den submit listener hinzufügen, und das default behaviour verhindern
+        // das hinzufügen je nach der seite und die verschiedenen aktionen ausführen
         if (page === "signup.html") {
-            // get sign up form
+            // sign up formular per id erhalten
             signupForm = document.getElementById("signupForm");
-            // add 'submit' lister to the form, prevent default and send data to server
+            // fügt dem 'submit' listener hinzu, und verhindert das default verhalten und sendet die daten an den server
             signupForm.addEventListener("submit", function (event) {
                 submitToServer(event, signupForm, "/signup");
             });
         }
         else if (page === "login.html") {
-            // get log in form
+            // erhält das log in formular per id
             loginForm = document.getElementById("loginForm");
-            // add 'submit' lister to the form, prevent default and send data to server
-            // here we pass 'loginUser' callback,
-            // to redirect him on index page upon successfully login and set his data to localStorage
+            // fügt dem formular 'submit' listener hinzu und verhindert das default verhalten, und sendet daten an den server
+            // hier übergeben wir 'loginUser' callback,
+            // um ihn nach erfolgreicher anmeldung auf die index seite umzuleiten und seine daten auf localStorage zu setzen
             loginForm.addEventListener("submit", function (event) {
                 submitToServer(event, loginForm, "/login", loginUser);
             });
         }
         else if (page === "index.html") {
-            // get post form
+            // post formular erhalten per id
             postsForm = document.getElementById("postForm");
-            // add 'submit' lister to the form, prevent default
-            // check if user is logged in, then submit the form data to server
+            // fügt dem formular 'submit' listener hinzu und verhindert das default verhalten
+            // überprüft ob der user eingelogged ist, und sende dann die formulardaten an den server
             postsForm.addEventListener("submit", verifyUserAndCreatePost);
-            // remove 'new post' form if user is not logged in
+            // entferne das formular 'new post' wenn user nicht eingeloggt ist 
             const user = getLoggedInUser();
             if (!user) {
                 document.getElementById("postFormWrapper")?.remove();
             }
         }
         else if (page === "profile.html") {
-            // get profile form
+            // profil formular erhalten per id
             profileForm = document.getElementById("profileForm");
-            // add 'submit' lister to the form, prevent default and send data to server
+            // fügt dem formular 'submit' listener hinzu und verhindert das default verhalten und sendet die daten an den server
             profileForm.addEventListener("submit", updateProfile);
             const user = getLoggedInUser();
             if (!user) {
-                // remove form if user is not logged in
+                // formular entfernen wenn der user nicht eingelogged ist
                 document.getElementById("profileForm")?.remove();
             }
             else {
-                // otherwise we should set default values to form for logged in user
+                // andernfalls sollte man default werte für den eingelogten user festlegen
                 setProfileFormValues();
             }
         }
     }
     async function submitToServer(_event, form, url, callback) {
-        // prevent default behaiour
+        // verhindert default verhalten
         _event.preventDefault();
-        // get data to submit to server
+        // daten an server senden
         let data = getFormData(form);
-        // send the request
+        // sendet anfrage
         let response = await sendPostRequest(url, data);
-        // finish request
+        // beendet anfrage
         await finalizeRequest(response, form, callback);
     }
     function getFormData(form) {
-        // we get formData
+        // bekommen formData
         const formData = new FormData(form);
         const data = {};
-        // we loop our values to add them to 'data' object
+        // schleifen die werte um sie dann dem 'data' object hinzuzufügen
         formData.forEach(function (value, key) {
             data[key] = value.toString();
         });
-        // and return newly created object with values
+        // die neu erstellten objekte werden mit einem wert zurückgegeben
         return data;
     }
     async function sendPostRequest(url, data) {
-        // send post to reuest to the server with provided url and data
+        // sendet einen post mit der angegebenen URL und den angegebenen daten an den server
         let response = await fetch(apiUrl + url, {
             method: "POST",
             headers: {
                 "Content-Type": "text/plain"
             },
-            // stringify data first
+            // daten werden zuerst stringifyed 
             body: JSON.stringify(data)
         });
         return response;
     }
-    // finalise our request, here we pass in response, form element and callback
-    // callback is an optional param, its a function to be excecuted upon success
-    // for example loginIn function we use as callback
+    // schließt die anfrage ab, hier übergeben wir als antwort das formularelement und callback
+    // callback ist ein optionaler parameter, eine funktion die bei erfolg ausgeführt werden muss
+    // z.b verwenden wir die loginIn function als callback
     async function finalizeRequest(response, form, callback) {
-        // get reponse text
+        // responsetext abrufen
         let responseText = await response.text();
-        // alert
+        // alert 
         alert(responseText);
         if (response.status === 200) {
-            // if request is sucessful reset form
+            // wenn anfrage erfolgreich ist, setz das formular zurück
             form.reset();
-            // if callback function was passed, excecute it
+            // wenn die callback function übergeben wurde, führe sie aus
             if (callback) {
                 callback(responseText);
             }
         }
     }
-    // check if user is logged in and create new post if so
+    // überprüfe ob user eingelogged ist und erstelle ggf neuen post
     async function verifyUserAndCreatePost(_event) {
-        // prevent default
+        // default verhindern
         _event.preventDefault();
-        // get user from localStorage
+        // user von localStorage abrufen
         const loggedInUser = getLoggedInUser();
-        // if user is not logged in - return
+        // wenn user nicht eingelogged ist - return 
         if (!loggedInUser)
             return;
-        // get the data
+        // hol die daten
         let data = getFormData(postsForm);
-        // set userId to data
+        // setzt die userId auf daten
         data.userId = loggedInUser._id;
-        // send request
+        // sendet anfrage
         let response = await sendPostRequest("/posts", data);
-        // we have post object in response here,
-        // so we call json() to get the object
+        // haben hier ein post object als antwort,
+        // also rufen wir json() auf um das object zu erhalten
         const post = await response.json();
-        // then we render the post and set false as second param, so the post will prepend
-        // it will be first in the list
+        // dann rendern wir den post und setzen false als zweiten parameter, damit der post bereitgestellt wird
+        // es wird an erster stelle in der liste stehen
         renderPost(post, false);
-        // reset the form to clear it
+        // setzt das formular zurück um es zu reseten
         postsForm.reset();
     }
-    // update user profile if user is logged in
+    // user profile aktualisieren wenn der user eingelogged ist
     async function updateProfile(_event) {
-        // prevent default behaviout
+        // default verhindern
         _event.preventDefault();
-        // get user from localStorage
+        // user von localStorage abrufen
         const loggedInUser = getLoggedInUser();
-        // return if no user found
+        // return wenn kein user gefunden wurde
         if (!loggedInUser)
             return;
-        // get data
+        // daten bekommen
         let data = getFormData(profileForm);
-        // set id
+        // id setzen
         data.userId = loggedInUser._id;
         let response = await sendPostRequest("/profile", data);
         let responseText = await response.text();
         alert(responseText);
-        // on success, update localStorage
-        // we will get updated user object here as string on success
-        // this is needed to keep our updated user info after page was refreshed
+        // aktualisiere bei erfolg localStorage
+        // wir werden hier ein updated user object als string für den erfolg erhalten
+        // das ist erforderlich um die aktualisierte user info nach dem aktualisieren der seite beizubehalten
         if (response.status === 200) {
             setUser(responseText);
         }
     }
-    // in profile form, set default values for user
+    // legt im profil formular default werte für den user fest
     function setProfileFormValues() {
         const loggedInUser = getLoggedInUser();
-        // if user is logged in, set values to form with his info
+        // wenn user eingelogged ist, lege die werte so fest das sie mit seinen infos erstellt werden
         if (loggedInUser) {
             document.getElementById("fname")?.setAttribute("value", loggedInUser.firstName);
             document.getElementById("lname")?.setAttribute("value", loggedInUser.lastName);
@@ -179,46 +179,46 @@ var Chatter;
             document.getElementById("age")?.setAttribute("value", loggedInUser.age.toString());
         }
     }
-    // set user info in local storage and redirect
+    // user info werden in local storage festgelegt und umgeleitet
     function loginUser(response) {
-        // set user to localStorage
+        // setz den user auf localStorage
         setUser(response);
-        // see if page variable id not undefined
+        // überprüft ob die id der seitenvariablen nicht undefined ist
         if (page) {
             window.location.href = path.replace(page, "index.html");
         }
     }
-    // set user info in local storage
+    // user info im localen storage festlegen
     function setUser(response) {
         localStorage.setItem("user", response);
     }
-    // get posts from back and render all via 'renderPost'
+    // holt sich posts vom backend und rendert alle via 'renderPost'
     async function getAndRenderPosts() {
-        // get user if exists, to send logged in userId to server
+        // user abrufen falls vorhanden, um eingeloggte userId an server zu senden
         const loggedInUser = getLoggedInUser();
-        // send request to get posts, with user id if exists
+        // anfrage senden um posts zu erhalten, mit user id falls vorhanden
         let response = await sendPostRequest("/get-posts", {
             userId: loggedInUser ? loggedInUser._id : ""
         });
-        // get all posts
+        // holt sich alle posts
         let data = await response.json();
         for (const post of data) {
             renderPost(post);
         }
     }
-    // render a single post
+    // einen post rendern
     function renderPost(post, append = true) {
-        // create wrapper elememnt
+        // erstellt wrapper elememnt
         const newElement = document.createElement("DIV");
-        // create title
+        // erstellt den titel
         const titleElement = document.createElement("h4");
         titleElement.innerText = post.title;
-        //  create content element
+        // erstellt den content element
         const contentElement = document.createElement("p");
         contentElement.innerText = post.content;
-        // create footer
+        // footer erstellen
         const footer = document.createElement("FOOTER");
-        // set author
+        // autor festlegen
         footer.innerText =
             "Author: " +
                 post.user.firstName +
@@ -227,15 +227,15 @@ var Chatter;
                 " | " +
                 "Date: " +
                 new Date(post.createdAt).toLocaleDateString();
-        // append all childs in wrapper
+        // hängt alle childs in wrapper an
         newElement.appendChild(titleElement);
         newElement.appendChild(contentElement);
         newElement.appendChild(footer);
         newElement.classList.add("card");
-        // append sing post elemnt to list on page
+        // fügt sign post element an die liste auf der seite an
         const container = document.getElementById("posts");
-        // if countainer is found - append or prepend to the beggining of the list
-        // depending on the `append` param
+        // wenn countainer gefunden wird - füge den anfang der liste hinzu oder stelle ihn an den anfang der liste 
+        // ist abhängig vom 'append' parameter
         if (container) {
             if (append) {
                 container.appendChild(newElement);
@@ -245,19 +245,19 @@ var Chatter;
             }
         }
     }
-    // get all users and loop to render them
+    // holt sich alle user und schleift diese um sie zu rendern
     async function getAndRenderUsers() {
-        // get users from server
+        // holt sich users vom server
         const response = await fetch(apiUrl + "/users");
-        // conver response to json
+        // antwort in json konvertieren
         const data = await response.json();
-        // loop array and render one by one
+        // schleife array und rendert dann nacheinander
         for (const user of data) {
             renderUser(user);
         }
     }
     function renderUser(user) {
-        // get logged in user, to shouw 'follow' button is user is logged in
+        // eingeloggten user erhalten um den button 'follow' anzuzeigen 
         const loggedInUser = getLoggedInUser();
         // wrapper element
         const newElement = document.createElement("DIV");
@@ -265,71 +265,70 @@ var Chatter;
         const titleElement = document.createElement("h4");
         titleElement.innerText = user.firstName + " " + user.lastName;
         newElement.appendChild(titleElement);
-        // if user is logged in show follow/unfollow button depending on current status
+        // wenn user eingelogged ist wird je nach aktuellem status der button follow/unfollow angezeigt
         if (loggedInUser) {
-            // define if logged in user if following the user that we are rendering
-            // we have users array in our user object
-            // if logged in user if following this user, his id will be in the array
-            // we use indexOf method to define if id exists in the array
+            // definiert ob der eingeloggte user dem user folgt den wir rendern
+            // wir haben ein user array in unserem user object
+            // wenn ein eingeloggedter user diesem user folgt befindet sich seine id im array
+            // wir verwenden indexOf method um zu definieren ob die id im array vorhanden ist
             const following = loggedInUser.users && loggedInUser.users.indexOf(user._id) > -1;
-            // create the button
+            // erstellt den button
             const button = document.createElement("BUTTON");
-            // if logged in user is following the one we're rendering -
-            // set text 'Unfollow', and 'Follow' otherwise
+            // wenn der eingeloggte user demjenigen folgt den wir rendern -
+            // setze den text auf 'Unfollow' und andernfalls auf 'Follow' 
             button.innerText = following ? "Unfollow" : "Follow";
-            // add listener to button, to toggle follow/unfollow
+            // fügt listener dem button hinzu, um follow/unfollow umzuschalten
             button.addEventListener("click", function () {
                 toggleFollowUser(button, user._id, !following);
             });
             newElement.appendChild(button);
         }
-        // add class to the whole user element, for styling
+        // fügt dem gesamten user element eine klasse für das styling hinzu
         newElement.classList.add("card");
-        // append wrapper element to list on page
+        // hängt das wrapper element an die liste auf der seite an
         const container = document.getElementById("users");
         if (container) {
             container.appendChild(newElement);
         }
     }
-    // follow/unfollow user if one is slogged in
-    // we call this function 'toggle', because depending on the current state, we either will follow or unfollow user
-    // we pass in button element as first param, to change the text depending on the state
-    // followId is the id of the user to follow/unfollow
-    // toFollow param means either we should follow the user, or unsubscribe from him
+    // user kann follow/unfollow wenn einer eingeloggt ist
+    // wir übergeben das buttonelement als ersten parameter, um den text je nach status zu ändern
+    // followId ist die id des users dem er follow/unfollowed
+    // toFollow parameter bedeutet das wir entweder dem user folgen oder ihn entfolgen
     async function toggleFollowUser(button, followId, toFollow = true) {
         const user = getLoggedInUser();
-        // not logged in, return
+        // nicht eingeloggt, return
         if (!user)
             return;
-        // set data to send
+        // daten zum senden setzen
         const data = {
             followId,
             userId: user._id
         };
-        // if we want to follow user- toFollow will be true,
-        // means we should send request to 'follow' path
-        // otherwise send request to 'unfollow' path
+        // wenn wir user folgen wollen- toFollow wird true sein,
+        // bedeutet wir sollten eine anfrage an den pfad 'follow' senden
+        // andernfalls sende die anfrage an den pfad 'unfollow' 
         const path = toFollow ? "follow" : "unfollow";
         const response = await sendPostRequest("/users/" + path, data);
-        // we will get updated user object here as string on success
-        // to update user and users array in the local storage
-        // this is needed to keep our updated states after page was refreshed
+        // wir werden hier ein aktualisiertes user object als string für den erfolg halten
+        // um den user und den user array im local storage zu aktualisieren
+        // ist dies erforderlich um unsere aktualisierten zustände nach dem aktualisieren der seite beizubehalten
         const responseText = await response.text();
         if (response.status === 200) {
-            // update users data in local storage on success
+            // update user daten im local storage bei erfolg
             setUser(responseText);
-            // change button text dependsing on current state
+            // änder den text des buttons abhänging vom aktuellen status
             button.innerText = toFollow ? "Unfollow" : "Follow";
         }
         else {
             alert(responseText);
         }
     }
-    // get logged in user from logged storage
+    // eingeloggter user aus dem protokollierten storage abrufen
     function getLoggedInUser() {
-        // get item from storage
+        // get item aus local storage holen
         const loggedInUserString = localStorage.getItem("user");
-        // parse to json if exists, otherwise return null
+        // wenn vorhanden json analysieren, andernfalls return null
         if (loggedInUserString) {
             return JSON.parse(loggedInUserString);
         }

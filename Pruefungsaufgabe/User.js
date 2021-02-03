@@ -3,13 +3,13 @@ Object.defineProperty(exports, "__esModule", { value: true });
 exports.unfollow = exports.follow = exports.getUsers = exports.findUserByEmailAndPass = exports.findUserById = exports.updateProfile = exports.createUser = void 0;
 const mongodb_1 = require("mongodb");
 const db_1 = require("./db");
-// define collection name to use in database
+// definiert den collectionname der in der db verwendet werden soll
 const collectionName = "users";
-// register new user with provided data
+// registriert einen neuen user mit den bereitgestellten daten
 async function createUser(data) {
-    // connect to db and get collection
+    // connected sich zur db und erhält die collection
     const collection = await db_1.getCollection(collectionName);
-    // create user object to insert in database
+    // create user object das in die db eingefügt werden soll
     const user = {
         firstName: data.firstName,
         lastName: data.lastName,
@@ -18,17 +18,17 @@ async function createUser(data) {
         age: data.age,
         users: []
     };
-    //set email as unique field first
+    // legt zuerst die email als eindeutiges feld fest
     await collection.createIndex({ email: 1 }, {
         unique: true
     });
-    // insert to database
+    // fügt in die db ein 
     await collection.insertOne(user);
 }
 exports.createUser = createUser;
-// update profile with provided user id and data
+// profile mit angegebener user id und daten aktualisieren
 async function updateProfile(userId, data) {
-    // set fields to Update
+    // setzt felder auf aktualisieren
     const update = {
         $set: {
             firstName: data.firstName,
@@ -38,13 +38,13 @@ async function updateProfile(userId, data) {
             age: data.age
         }
     };
-    // call funct to update the user
+    // ruft function auf um den user zu aktualisieren
     return await updateOne(update, userId);
 }
 exports.updateProfile = updateProfile;
 async function findUserById(id) {
     const collection = await db_1.getCollection(collectionName);
-    // transform id string to ObjectId for mongo and find user by the id
+    // transformiert id string für mongo zu ObjectId und sucht user anhand der id
     return await collection.findOne({ _id: new mongodb_1.ObjectId(id) });
 }
 exports.findUserById = findUserById;
@@ -55,13 +55,13 @@ async function findUserByEmailAndPass(email, password) {
 exports.findUserByEmailAndPass = findUserByEmailAndPass;
 async function getUsers() {
     const collection = await db_1.getCollection(collectionName);
-    // find all users and trasform result to array
+    // findet alle user und trasformiert das ergebnis in ein array um
     return await collection.find().toArray();
 }
 exports.getUsers = getUsers;
 async function follow(userId, followId) {
-    // add to set will add new element to the array if it foesnt exists yet,
-    // transform id strong to Object if for mongo
+    // add to set fügt dem array ein neues element hinzu falls es noch nicht existiert,
+    // transformiert die id strong zu Object für mongo
     const update = {
         $addToSet: { users: new mongodb_1.ObjectId(followId) }
     };
@@ -69,23 +69,23 @@ async function follow(userId, followId) {
 }
 exports.follow = follow;
 async function unfollow(userId, followId) {
-    // pull removes requested id from array if it exists
+    // durch pull wird die angeforderte id aus dem array entfernt, falls es existiert
     const update = {
         $pull: { users: new mongodb_1.ObjectId(followId) }
     };
     return await updateOne(update, userId);
 }
 exports.unfollow = unfollow;
-// [key: string] means we can have any work for the key in our object
+// [key: string] bedeutet das wir jede arbeit für den key in unserem object haben können
 async function updateOne(update, userId) {
     const collection = await db_1.getCollection(collectionName);
-    // condition  to find user, convert is string to objectId for mongo
+    // bedingung um user zu finden, konvertiere string zu objectId für mongo
     const query = { _id: new mongodb_1.ObjectId(userId) };
-    // options what to recieve
+    // optionen was zu erhalten ist
     const options = { returnOriginal: false, upsert: false, projection: {} };
-    // update user
+    // update den user
     const result = await collection.findOneAndUpdate(query, update, options);
-    // return update user document
+    // return update des user documents
     return result.value;
 }
 //# sourceMappingURL=User.js.map
