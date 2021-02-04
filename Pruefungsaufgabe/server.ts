@@ -2,9 +2,9 @@
 import * as Http from "http";
 import { MongoError } from "mongodb";
 
-import { createPost, getPosts, Post } from "./Post";
+import { createPost, getPosts, Post } from "./post";
 
-import { createUser, updateProfile, getUsers, findUserByEmailAndPass, follow, unfollow, User } from "./User";
+import { createUser, updateProfile, getUsers, findUserByEmailAndPass, follow, unfollow, User } from "./user";
 
 export namespace P_3_1Server {
     interface IFormData<TValue> {

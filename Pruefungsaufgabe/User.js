@@ -88,4 +88,4 @@ async function updateOne(update, userId) {
     // return update des user documents
     return result.value;
 }
-//# sourceMappingURL=User.js.map
+//# sourceMappingURL=user.js.map
