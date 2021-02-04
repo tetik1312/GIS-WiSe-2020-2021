@@ -2,13 +2,13 @@
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.getPosts = exports.createPost = void 0;
 const db_1 = require("./db");
-const user_1 = require("./user");
+const User_1 = require("./User");
 // collection name zum abfragen der datenbank
 const collectionName = "posts";
 // create post mit bereitgestellten daten mit user erstellen
 async function createPost(userId, data) {
     // zuerst müssen wir den user anhand seiner id finden um ihn zu identifizieren und den user.id an den vom neu erstellten post anzuhängen
-    const user = await user_1.findUserById(userId);
+    const user = await User_1.findUserById(userId);
     // wenn user gültig ist erstelle einen post
     if (user) {
         // create object das in die db eingefügt werden soll
@@ -37,7 +37,7 @@ async function getPosts(userId) {
     let query = {};
     // wenn user eingelogged ist - erhalte seine posts und posts von usern denen er folgt
     if (userId) {
-        const user = await user_1.findUserById(userId);
+        const user = await User_1.findUserById(userId);
         // überprüfe ob ein user gefunden wurde und fahre in dem fall fort
         if (user) {
             const ids = [];

@@ -4,7 +4,7 @@ import { MongoError } from "mongodb";
 
 import { createPost, getPosts, Post } from "./post";
 
-import { createUser, updateProfile, getUsers, findUserByEmailAndPass, follow, unfollow, User } from "./user";
+import { createUser, updateProfile, getUsers, findUserByEmailAndPass, follow, unfollow, User } from "./User";
 
 export namespace P_3_1Server {
     interface IFormData<TValue> {

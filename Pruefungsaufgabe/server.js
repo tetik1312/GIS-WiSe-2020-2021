@@ -5,7 +5,7 @@ exports.P_3_1Server = void 0;
 const Http = require("http");
 const mongodb_1 = require("mongodb");
 const post_1 = require("./post");
-const user_1 = require("./user");
+const User_1 = require("./User");
 var P_3_1Server;
 (function (P_3_1Server) {
     console.log("Starting server");
@@ -35,7 +35,7 @@ var P_3_1Server;
                 const post = JSON.parse(body);
                 if (url === "/signup") {
                     // wenn die url signup ist, sollte es einen benutzer registrieren
-                    user_1.createUser({
+                    User_1.createUser({
                         firstName: post.firstName,
                         lastName: post.lastName,
                         email: post.email,
@@ -53,7 +53,7 @@ var P_3_1Server;
                 }
                 else if (url === "/profile") {
                     // profil mit erhaltener user id updaten
-                    user_1.updateProfile(post.userId, {
+                    User_1.updateProfile(post.userId, {
                         firstName: post.firstName,
                         lastName: post.lastName,
                         email: post.email,
@@ -71,7 +71,7 @@ var P_3_1Server;
                 }
                 else if (url === "/login") {
                     // versucht den user mit email und password einzuloggen
-                    user_1.findUserByEmailAndPass(post.email, post.password)
+                    User_1.findUserByEmailAndPass(post.email, post.password)
                         .then((data) => {
                         if (data) {
                             // stringify array zu string um es zum frontend zu senden, da der response header text ist
@@ -111,7 +111,7 @@ var P_3_1Server;
                 }
                 else if (url === "/users/follow") {
                     // followed den user durch followId, userId ist die id des logged in users
-                    user_1.follow(post.userId, post.followId)
+                    User_1.follow(post.userId, post.followId)
                         .then((data) => {
                         endResponse(_response, JSON.stringify(data));
                     })
@@ -121,7 +121,7 @@ var P_3_1Server;
                 }
                 else if (url === "/users/unfollow") {
                     // unfollow den user von der followId die empfangen wurde, userId ist id vom eingeloggten user
-                    user_1.unfollow(post.userId, post.followId)
+                    User_1.unfollow(post.userId, post.followId)
                         .then((data) => {
                         endResponse(_response, JSON.stringify(data));
                     })
@@ -139,7 +139,7 @@ var P_3_1Server;
             // warten bis antwort emfangen haben dann GET method
             if (url === "/users") {
                 // liste aller user abrufen
-                user_1.getUsers()
+                User_1.getUsers()
                     .then((data) => {
                     // stringify array zu string um zum frontend zu senden, da die response header text ist
                     endResponse(_response, JSON.stringify(data));

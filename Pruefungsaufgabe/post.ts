@@ -1,7 +1,7 @@
 
 import { Collection, InsertOneWriteOpResult } from "mongodb";
 import { getCollection } from "./db";
-import { findUserById, User } from "./user";
+import { findUserById, User } from "./User";
 
 
 interface BasePost {
