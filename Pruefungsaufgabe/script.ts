@@ -1,5 +1,5 @@
 namespace Chatter {
-    let apiUrl: string = "https://supernova22.herokuapp.com/";
+    let apiUrl: string = "https://supernova22.herokuapp.com";
     //let apiUrl: string = "http://localhost:8100";
 
     interface IFormData<TValue> {

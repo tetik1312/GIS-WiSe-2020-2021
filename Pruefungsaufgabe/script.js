@@ -1,7 +1,7 @@
 "use strict";
 var Chatter;
 (function (Chatter) {
-    let apiUrl = "https://supernova22.herokuapp.com/";
+    let apiUrl = "https://supernova22.herokuapp.com";
     const path = window.location.pathname;
     const page = path.split("/").pop();
     if (page === "index.html") {
